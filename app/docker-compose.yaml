@@ -1,0 +1,27 @@
+version: "3.3"
+services:
+  db:
+    image: postgres:15
+    container_name: db_app
+    ports:
+      - 5432
+    env_file:
+      - api/.env-non-dev
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: market-palace
+    ports:
+      - "9999:8000"
+    depends_on:
+      - db
+    volumes:
+      - static_data:/app/api/static/image
+
+volumes:
+  db_data:
+  static_data:
